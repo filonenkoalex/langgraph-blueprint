@@ -1,0 +1,262 @@
+# ============================================================
+# ULTRA-STRICT PYTHON PROJECT TEMPLATE
+# Maximum strictness - TypeScript strict mode equivalent
+# Tools: uv + ruff + basedpyright + pydantic v2
+# Python 3.12+
+# ============================================================
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agentic-app"
+version = "0.1.0"
+description = "Agentic application built with LangGraph"
+authors = [{ name = "Your Name", email = "your.email@example.com" }]
+license = { text = "MIT" }
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pydantic>=2.0.0",
+    "types-requests",
+    "python-dotenv",
+    "typing-extensions>=4.12",
+]
+
+[project.optional-dependencies]
+dev = [
+    "basedpyright>=1.31.7",
+    "prek",
+    "ruff",
+    "gitingest",
+    "poethepoet",
+    "radon",
+    "skylos",
+    "ty",
+    "pytest>=8.0.0",
+    "pytest-cov>=5.0.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["*"]
+exclude = ["tests*", "scripts*", "docs*", "examples*"]
+
+# ============================================================
+# POE THE POET - Task Runner
+# ============================================================
+[tool.poe.tasks]
+format = [
+    {cmd = "ruff format ."},
+    {cmd = "ruff check . --fix"},
+    {cmd = "basedpyright"},
+    {cmd = "ty check ."}
+]
+
+check = [
+    {cmd = "ruff check ."},
+    {cmd = "basedpyright"},
+    {cmd = "ty check ."}
+]
+
+ty = {cmd = "ty check ."}
+lint = {cmd = "ruff check . --fix"}
+lint-unsafe = {cmd = "ruff check . --fix --unsafe-fixes"}
+
+metrics = [
+    {cmd = "skylos . --quality"},
+    {cmd = "radon cc . -a -nb"},
+    {cmd = "radon mi . -nb"}
+]
+
+quality = [
+    {cmd = "ruff format ."},
+    {cmd = "ruff check . --fix"},
+    {cmd = "basedpyright --level error"},
+    {cmd = "ty check ."},
+    {cmd = "radon cc . -a -nb"},
+    {cmd = "skylos . --quality --danger"},
+]
+
+# ============================================================
+# RUFF CONFIGURATION - MAXIMUM STRICTNESS
+# ============================================================
+[tool.ruff]
+target-version = "py312"
+line-length = 88
+indent-width = 4
+fix = true
+show-fixes = true
+preview = true
+
+[tool.ruff.lint]
+select = [
+    "E", "F", "I", "UP", "B", "BLE", "C4", "C90", "T20", "SIM", "N", "Q", "RUF",
+    "ASYNC", "S", "PTH", "ERA", "PL", "PERF", "ANN", "ARG", "FBT", "RET", "TCH",
+]
+
+ignore = [
+    "E501",
+    "S603",
+    "S607",
+]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.ruff.lint.pylint]
+max-nested-blocks = 3
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+"tests/**/*.py" = ["S101", "PLR2004", "ANN", "FBT"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["agentic_app"]
+combine-as-imports = true
+force-sort-within-sections = true
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.flake8-type-checking]
+strict = true
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+# ============================================================
+# Basedpyright CONFIGURATION - MAXIMUM STRICTNESS
+# ============================================================
+[tool.basedpyright]
+pythonVersion = "3.12"
+typeCheckingMode = "strict"
+
+reportMissingImports = true
+reportMissingTypeStubs = true
+reportUndefinedVariable = true
+reportAssertAlwaysTrue = true
+reportInvalidStringEscapeSequence = true
+
+reportOptionalSubscript = true
+reportOptionalMemberAccess = true
+reportOptionalCall = true
+reportOptionalIterable = true
+reportOptionalContextManager = true
+reportOptionalOperand = true
+reportAny = true
+reportExplicitAny = true
+reportIgnoreCommentWithoutRule = false
+reportPrivateLocalImportUsage = true
+
+reportMissingParameterType = true
+reportMissingTypeArgument = true
+reportUnknownParameterType = true
+reportUnknownLambdaType = true
+reportUnknownArgumentType = true
+reportUnknownVariableType = true
+reportUnknownMemberType = true
+reportUntypedFunctionDecorator = true
+reportUntypedClassDecorator = true
+reportUntypedBaseClass = true
+reportUntypedNamedTuple = true
+
+reportIncompatibleMethodOverride = true
+reportIncompatibleVariableOverride = true
+reportInconsistentConstructor = true
+reportUninitializedInstanceVariable = true
+reportOverlappingOverload = true
+reportMissingSuperCall = true
+
+reportPrivateUsage = true
+reportConstantRedefinition = true
+reportInvalidStubStatement = true
+reportIncompleteStub = true
+reportUnsupportedDunderAll = true
+reportUnusedClass = "error"
+reportUnusedFunction = "error"
+reportUnusedVariable = "error"
+reportUnusedImport = "error"
+reportDuplicateImport = "error"
+
+reportUnnecessaryIsInstance = "error"
+reportUnnecessaryCast = "error"
+reportUnnecessaryComparison = "error"
+reportUnnecessaryContains = "error"
+reportUnnecessaryTypeIgnoreComment = "error"
+
+reportGeneralTypeIssues = true
+reportPropertyTypeMismatch = true
+reportFunctionMemberAccess = true
+reportCallInDefaultInitializer = true
+reportImplicitStringConcatenation = true
+
+reportImplicitOverride = true
+reportDeprecated = "warning"
+reportImportCycles = "warning"
+
+exclude = [
+    "**/__pycache__", "**/node_modules", ".git", ".mypy_cache", ".pyright_cache",
+    ".ruff_cache", ".pytest_cache", ".venv", "venv", "env", "logs", "output",
+    "data", "build", "dist", "*.egg-info",
+]
+
+venvPath = "."
+venv = ".venv"
+
+# ============================================================
+# PYTEST CONFIGURATION
+# ============================================================
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "-W error",
+    "--tb=short",
+    "--cov=.",
+    "--cov-report=term-missing:skip-covered",
+    "--cov-report=html",
+    "--cov-report=xml",
+    "--cov-fail-under=80",
+]
+filterwarnings = ["error"]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+]
+
+# ============================================================
+# COVERAGE CONFIGURATION
+# ============================================================
+[tool.coverage.run]
+source = ["."]
+branch = true
+omit = [
+    "*/tests/*", "*/test_*.py", "*/__pycache__/*", "*/.venv/*",
+    "*/venv/*", "*/scripts/*",
+]
+
+[tool.coverage.report]
+precision = 2
+show_missing = true
+skip_covered = false
+fail_under = 80
+exclude_lines = [
+    "pragma: no cover", "def __repr__", "raise AssertionError",
+    "raise NotImplementedError", "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:", "@abstractmethod", "@overload",
+]
+
+[dependency-groups]
+dev = [
+    "prek>=0.2.25",
+]
