@@ -22,6 +22,8 @@ dependencies = [
     "types-requests",
     "python-dotenv",
     "typing-extensions>=4.12",
+    "langchain==1.2.7",
+    "langchain-openai==1.1.7",
 ]
 
 [project.optional-dependencies]
