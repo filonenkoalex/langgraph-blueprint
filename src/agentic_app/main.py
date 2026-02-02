@@ -18,7 +18,7 @@ class Actor(BaseModel):
 def main() -> None:
     """Run extraction demo."""
     llm = ChatOpenAI(model="gpt-4o")
-    llm.invoke("Tom Hanks is an American actor")
+
     client = StructuredOutputClient(llm)
 
     # Type comes from invoke, not constructor
