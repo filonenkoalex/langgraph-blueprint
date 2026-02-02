@@ -14,6 +14,7 @@ source = { editable = "." }
 dependencies = [
     { name = "langchain" },
     { name = "langchain-openai" },
+    { name = "langgraph" },
     { name = "pydantic" },
     { name = "pydantic-settings" },
     { name = "python-dotenv" },
@@ -25,6 +26,7 @@ dependencies = [
 dev = [
     { name = "basedpyright" },
     { name = "gitingest" },
+    { name = "langgraph-cli" },
     { name = "poethepoet" },
     { name = "prek" },
     { name = "pytest" },
@@ -39,8 +41,10 @@ dev = [
 requires-dist = [
     { name = "basedpyright", marker = "extra == 'dev'", specifier = ">=1.31.7" },
     { name = "gitingest", marker = "extra == 'dev'" },
-    { name = "langchain", specifier = "==1.2.7" },
-    { name = "langchain-openai", specifier = "==1.1.7" },
+    { name = "langchain", specifier = ">=1.2.7" },
+    { name = "langchain-openai", specifier = ">=1.1.7" },
+    { name = "langgraph", specifier = ">=1.0.7" },
+    { name = "langgraph-cli", marker = "extra == 'dev'", specifier = ">=0.4.12" },
     { name = "poethepoet", marker = "extra == 'dev'" },
     { name = "prek", marker = "extra == 'dev'" },
     { name = "pydantic", specifier = ">=2.0.0" },
@@ -1113,6 +1117,19 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/98/76/55a18c59dedf39688d72c4b06af73a5e3ea0d1a01bc867b88fbf0659f203/langgraph_checkpoint-4.0.0.tar.gz", hash = "sha256:814d1bd050fac029476558d8e68d87bce9009a0262d04a2c14b918255954a624", size = 137320, upload-time = "2026-01-12T20:30:26.38Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/4a/de/ddd53b7032e623f3c7bcdab2b44e8bf635e468f62e10e5ff1946f62c9356/langgraph_checkpoint-4.0.0-py3-none-any.whl", hash = "sha256:3fa9b2635a7c5ac28b338f631abf6a030c3b508b7b9ce17c22611513b589c784", size = 46329, upload-time = "2026-01-12T20:30:25.2Z" },
+]
+
+[[package]]
+name = "langgraph-cli"
+version = "0.4.12"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "click" },
+    { name = "langgraph-sdk" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/08/04/0764d07b1c5601cdb73f6949fab80ce867983684d024f3de48cce1d8aba2/langgraph_cli-0.4.12.tar.gz", hash = "sha256:7aa6ca37d6f60c75f2ea310f4cae233f59fe0026e5ef43dab34c04d1cb61c7a6", size = 838313, upload-time = "2026-01-23T13:34:16.211Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/29/06/0adb15491518db7b0617bbc3f0894fbc1ffa74b1fc0c051217b1c1a538f5/langgraph_cli-0.4.12-py3-none-any.whl", hash = "sha256:ce85901b307dfa14408c6e4e122a2ccafe3abc53f6bcc99f5080715c1a0a8347", size = 41159, upload-time = "2026-01-23T13:34:14.65Z" },
 ]
 
 [[package]]

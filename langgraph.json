@@ -1,0 +1,7 @@
+{
+  "dependencies": ["."],
+  "graphs": {
+    "movie_agent": "./src/agentic_app/workflows/movie/graph.py:movie_graph"
+  },
+  "env": "./.env"
+}
