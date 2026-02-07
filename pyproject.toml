@@ -40,7 +40,8 @@ dev = [
     "ty",
     "pytest>=8.0.0",
     "pytest-cov>=5.0.0",
-    "langgraph-cli>=0.4.12",
+    "langgraph-cli[inmem]>=0.4.12",
+    "langsmith-fetch"
 ]
 
 [tool.setuptools.packages.find]

@@ -10,6 +10,25 @@
             "envFile": "${workspaceFolder}/.env",
             "cwd": "${workspaceFolder}",
             "justMyCode": true
+        },
+        {
+            "name": "[DEBUG] LangGraph DEV",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "langgraph_cli",
+            "args": [
+                "dev",
+                "--allow-blocking"
+            ],
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "python": "${workspaceFolder}/.venv/Scripts/python.exe",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/src",
+                "PYTHONIOENCODING": "utf-8"
+            },
+            "envFile": "${workspaceFolder}/.env",
+            "justMyCode": false
         }
     ]
 }

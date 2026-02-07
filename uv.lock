@@ -27,6 +27,7 @@ dev = [
     { name = "basedpyright" },
     { name = "gitingest" },
     { name = "langgraph-cli" },
+    { name = "langsmith-fetch" },
     { name = "poethepoet" },
     { name = "prek" },
     { name = "pytest" },
@@ -45,6 +46,7 @@ requires-dist = [
     { name = "langchain-openai", specifier = ">=1.1.7" },
     { name = "langgraph", specifier = ">=1.0.7" },
     { name = "langgraph-cli", marker = "extra == 'dev'", specifier = ">=0.4.12" },
+    { name = "langsmith-fetch", marker = "extra == 'dev'" },
     { name = "poethepoet", marker = "extra == 'dev'" },
     { name = "prek", marker = "extra == 'dev'" },
     { name = "pydantic", specifier = ">=2.0.0" },
@@ -1176,6 +1178,23 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/66/bb/b8a196c9b9a7ca8b8845eaec7dbae35bcfcb0da3068794e76b29211eae2b/langsmith-0.6.7.tar.gz", hash = "sha256:d89c604a18fc606b7835d8e7924f7cdbe130ca2207bdff8f989590e50d65b802", size = 963940, upload-time = "2026-01-31T02:10:34.069Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/ec/9a/5bc17ea3c746363e73c11df5e89068fea1ed175ca9c00fdb6886efc35b21/langsmith-0.6.7-py3-none-any.whl", hash = "sha256:4bd4372b8bf724b86314f64644562b5598407614e04e74b536c09490d153bd61", size = 309369, upload-time = "2026-01-31T02:10:32.6Z" },
+]
+
+[[package]]
+name = "langsmith-fetch"
+version = "0.3.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "click" },
+    { name = "langsmith" },
+    { name = "python-dotenv" },
+    { name = "pyyaml" },
+    { name = "requests" },
+    { name = "rich" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/38/eb/d21403968c0fac374391b97951dc9025806a38d83e3a723429dae2c1a122/langsmith_fetch-0.3.1.tar.gz", hash = "sha256:8c8ad53a17ee1654efdd20b00ca7cf47288373468c66ae4d87f72ab09ca48055", size = 5400935, upload-time = "2025-12-12T19:50:13.125Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c7/f4/7d8727673ade5ad31f70e1ff14ebdd2d2e11d10afe4085de9b9296c4ddb2/langsmith_fetch-0.3.1-py3-none-any.whl", hash = "sha256:ad98a94521a3723ab861eb374675cf73b1f400ee736190b9dc3e90afeb17b69f", size = 22970, upload-time = "2025-12-12T19:50:07.205Z" },
 ]
 
 [[package]]
