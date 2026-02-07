@@ -4,15 +4,16 @@ A minimal chatbot graph: START -> chatbot -> END.
 Uses LangGraph's built-in MessagesState for conversation history.
 """
 
+# pyright: reportUnknownMemberType=false
+
 from langchain_openai import ChatOpenAI
 from langgraph.graph import MessagesState, StateGraph
 
 model = ChatOpenAI()
 
-
 def chatbot(state: MessagesState) -> dict[str, list[object]]:
     """Invoke the LLM with the current conversation history."""
-    response = model.invoke(state.messages)
+    response = model.invoke(state["messages"])
     return {"messages": [response]}
 
 
