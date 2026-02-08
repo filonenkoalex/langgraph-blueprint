@@ -6,7 +6,7 @@ and response shapes.
 
 Usage::
 
-    python -m agentic_app.main_try_api
+    python scripts/debug/debug_fund_accounting_api.py
 """
 
 from __future__ import annotations

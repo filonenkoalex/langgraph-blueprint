@@ -45,4 +45,4 @@ class TaskResponse(BaseModel):
     status: TaskStatus
     messages: list[str] = Field(default_factory=list)
     correlation_id: str = Field(alias="correlationId")
-    data: dict[str, Any] | None = None
+    data: dict[str, Any] | None = None  # pyright: ignore[reportExplicitAny]
