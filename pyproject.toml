@@ -28,6 +28,7 @@ dependencies = [
     "httpx",
     "structlog",
     "rapidfuzz",
+    "dependency-injector",
 ]
 
 [project.optional-dependencies]
