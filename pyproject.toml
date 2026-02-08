@@ -13,8 +13,7 @@ build-backend = "setuptools.build_meta"
 name = "agentic-app"
 version = "0.1.0"
 description = "Agentic application built with LangGraph"
-authors = [{ name = "Your Name", email = "your.email@example.com" }]
-license = { text = "MIT" }
+authors = [{ name = "Oleksii Filonenko", email = "ofilonenko@allvuesystems.com" }]
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
