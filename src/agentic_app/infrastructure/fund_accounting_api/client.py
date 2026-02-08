@@ -1,7 +1,13 @@
 """Fund Accounting API client.
 
-Single-file client that handles HTTP, auth (via httpx auth=), and task polling.
-Contains NO business logic -- only API coordination.
+Pure HTTP transport with task polling. Contains NO business logic.
+Auth is received as a pre-built ``httpx.Auth`` -- the client never
+constructs tokens itself.
+
+Use the ``create_client`` factory for standard construction::
+
+    async with create_client(config) as client:
+        funds = await client.get_funds()
 """
 
 from __future__ import annotations
@@ -14,10 +20,13 @@ import httpx
 from httpx_auth import OAuth2ClientCredentials
 import structlog
 
-from .config import FundAccountingConfig
 from .constants import (
     CONTENT_TYPE_JSON,
+    DEFAULT_INTEGRATION_CODE,
     DEFAULT_PAGE_LIMIT,
+    DEFAULT_TASK_POLL_INTERVAL_SECONDS,
+    DEFAULT_TASK_POLL_MAX_ATTEMPTS,
+    DEFAULT_TIMEOUT_SECONDS,
     ENDPOINT_FUNDS,
     ENDPOINT_GL_ACCOUNTS,
     ENDPOINT_INVESTORS,
@@ -51,9 +60,12 @@ from .models import (
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator
 
+    from structlog.typing import FilteringBoundLogger
+
+    from .config import FundAccountingConfig
     from .models import TransactionRequest
 
-logger = structlog.get_logger(__name__)
+logger: FilteringBoundLogger = structlog.get_logger(__name__)  # pyright: ignore[reportAny]
 
 
 # =============================================================================
@@ -64,81 +76,41 @@ logger = structlog.get_logger(__name__)
 class FundAccountingClient:
     """Fund Accounting API client.
 
-    Provides high-level operations against the Fund Accounting API.
-    Auth is handled transparently by httpx via the ``auth=`` parameter.
+    Pure HTTP transport. Receives a fully-configured ``httpx.Auth`` --
+    never constructs OAuth tokens itself.
 
-    Supports two construction styles::
+    Use ``create_client`` factory for standard construction::
 
-        # Option A: config object
-        client = FundAccountingClient(config)
-
-        # Option B: individual params
-        client = FundAccountingClient(
-            base_url="https://...",
-            tenant_name="stgonevue",
-            company_name="AltaReturn SE Demo",
-            client_id="...",
-            client_secret="...",
-        )
-
-    Auth is swappable::
-
-        client = FundAccountingClient(config, auth=httpx.BasicAuth("u", "p"))
+        async with create_client(config) as client:
+            funds = await client.get_funds()
     """
 
-    def __init__(  # noqa: PLR0913
+    def __init__(  # noqa: PLR0913  # pyright: ignore[reportMissingSuperCall]
         self,
-        config: FundAccountingConfig | None = None,
         *,
-        # Individual params (used when config is None)
-        base_url: str = "",
-        tenant_name: str = "",
-        company_name: str = "",
-        client_id: str = "",
-        client_secret: str = "",
-        integration_code: str = "API",
-        timeout_seconds: float = 30.0,
-        token_early_expiry_seconds: float = 30.0,
-        poll_interval_seconds: float = 1.0,
-        poll_max_attempts: int = 60,
-        # Swappable auth strategy
-        auth: httpx.Auth | None = None,
+        base_url: str,
+        tenant_name: str,
+        company_name: str,
+        auth: httpx.Auth,
+        integration_code: str = DEFAULT_INTEGRATION_CODE,
+        timeout_seconds: float = DEFAULT_TIMEOUT_SECONDS,
+        poll_interval_seconds: float = DEFAULT_TASK_POLL_INTERVAL_SECONDS,
+        poll_max_attempts: int = DEFAULT_TASK_POLL_MAX_ATTEMPTS,
     ) -> None:
-        self._config = config or FundAccountingConfig(
-            base_url=base_url,
-            tenant_name=tenant_name,
-            company_name=company_name,
-            client_id=client_id,
-            client_secret=client_secret,
-            integration_code=integration_code,
-            timeout_seconds=timeout_seconds,
-            token_early_expiry_seconds=token_early_expiry_seconds,
-            poll_interval_seconds=poll_interval_seconds,
-            poll_max_attempts=poll_max_attempts,
-        )
-
-        cfg = self._config
-
         self._http = httpx.AsyncClient(
-            base_url=cfg.base_url,
-            timeout=cfg.timeout_seconds,
+            base_url=base_url,
+            timeout=timeout_seconds,
             headers={
                 HEADER_CONTENT_TYPE: CONTENT_TYPE_JSON,
-                HEADER_ALLVUE_CLIENT_ID: cfg.tenant_name,
-                HEADER_ALLVUE_COMPANY_NAME: cfg.company_name,
-                HEADER_ALLVUE_INTEGRATION_CODE: cfg.integration_code,
+                HEADER_ALLVUE_CLIENT_ID: tenant_name,
+                HEADER_ALLVUE_COMPANY_NAME: company_name,
+                HEADER_ALLVUE_INTEGRATION_CODE: integration_code,
             },
-            auth=auth
-            or OAuth2ClientCredentials(
-                f"{cfg.base_url}{ENDPOINT_OAUTH_TOKEN}",
-                client_id=cfg.client_id,
-                client_secret=cfg.client_secret,
-                early_expiry=cfg.token_early_expiry_seconds,
-            ),
+            auth=auth,
         )
 
-        self._poll_interval = cfg.poll_interval_seconds
-        self._poll_max_attempts = cfg.poll_max_attempts
+        self._poll_interval = poll_interval_seconds
+        self._poll_max_attempts = poll_max_attempts
 
     async def close(self) -> None:
         """Release all resources."""
@@ -261,9 +233,9 @@ class FundAccountingClient:
         method: str,
         path: str,
         *,
-        params: dict[str, Any] | None = None,
-        json_body: dict[str, Any] | None = None,
-    ) -> dict[str, Any]:
+        params: dict[str, Any] | None = None,  # pyright: ignore[reportExplicitAny]
+        json_body: dict[str, Any] | None = None,  # pyright: ignore[reportExplicitAny]
+    ) -> dict[str, Any]:  # pyright: ignore[reportExplicitAny]
         """Execute an HTTP request with error handling.
 
         Auth is handled transparently by httpx via the ``auth=`` parameter
@@ -274,7 +246,7 @@ class FundAccountingClient:
                 method, path, params=params, json=json_body
             )
             response.raise_for_status()
-            return response.json()  # type: ignore[no-any-return]
+            return response.json()  # pyright: ignore[reportAny]
 
         except httpx.TimeoutException as e:
             logger.error("HTTP timeout", method=method, path=path)
@@ -346,8 +318,11 @@ async def create_client(
 ) -> AsyncIterator[FundAccountingClient]:
     """Create a Fund Accounting client with automatic resource management.
 
+    Builds the default ``OAuth2ClientCredentials`` auth from *config* unless
+    a custom *auth* is supplied (useful for testing).
+
     Args:
-        config: Complete configuration.
+        config: Complete configuration including OAuth credentials.
         auth: Optional custom auth (for testing or alternative auth strategies).
 
     Usage::
@@ -355,7 +330,23 @@ async def create_client(
         async with create_client(config) as client:
             funds = await client.get_funds()
     """
-    client = FundAccountingClient(config, auth=auth)
+    resolved_auth = auth or OAuth2ClientCredentials(
+        token_url=f"{config.base_url}{ENDPOINT_OAUTH_TOKEN}",
+        client_id=config.client_id,
+        client_secret=config.client_secret,
+        early_expiry=0,
+    )
+
+    client = FundAccountingClient(
+        base_url=config.base_url,
+        tenant_name=config.tenant_name,
+        company_name=config.company_name,
+        auth=resolved_auth,
+        integration_code=config.integration_code,
+        timeout_seconds=config.timeout_seconds,
+        poll_interval_seconds=config.poll_interval_seconds,
+        poll_max_attempts=config.poll_max_attempts,
+    )
     try:
         yield client
     finally:

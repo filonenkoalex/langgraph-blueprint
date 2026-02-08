@@ -1,11 +1,13 @@
 """Settings for the Fund Accounting API."""
 
 from pydantic import Field
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class FundAccountingApiSettings(BaseSettings):
-    """Settings for the Fund Accounting API."""
+    """Settings for the Fund Accounting API (reads from .env)."""
+
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     base_url: str = Field(..., alias="FUND_ACCOUNTING_API_BASE_URL")
     client_id: str = Field(..., alias="FUND_ACCOUNTING_API_CLIENT_ID")

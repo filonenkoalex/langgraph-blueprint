@@ -14,7 +14,7 @@ class BusinessCentralHttpClient:
 
     MAX_TOP = 10000
 
-    def __init__(
+    def __init__(  # pyright: ignore[reportMissingSuperCall]
         self,
         odata_base_url: str,
         odata_tenant: str,
@@ -40,9 +40,7 @@ class BusinessCentralHttpClient:
         }
         raw = await self._client.get("/investmentCompanies", params=params)
 
-        response = ODataResponse[FundResponse].model_validate(raw.json())
-
-        return response
+        return ODataResponse[FundResponse].model_validate(raw.json())
 
     async def get_investors(
         self, top: int = MAX_TOP
@@ -56,10 +54,8 @@ class BusinessCentralHttpClient:
         }
         raw = await self._client.get("/investors", params=params)
 
-        response = ODataResponse[InvestorResponse].model_validate(raw.json())
+        return ODataResponse[InvestorResponse].model_validate(raw.json())
 
-        return response
-
-    async def close(self):
+    async def close(self) -> None:
         """Close the HTTP client."""
         await self._client.aclose()

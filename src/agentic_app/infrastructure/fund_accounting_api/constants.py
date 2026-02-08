@@ -11,13 +11,13 @@ from typing import Final
 # API Endpoints
 # =============================================================================
 
-ENDPOINT_OAUTH_TOKEN: Final[str] = "/v1/oauth2/token"  # noqa: S105
-ENDPOINT_FUNDS: Final[str] = "/v1/funds"
-ENDPOINT_INVESTORS: Final[str] = "/v1/investors"
-ENDPOINT_GL_ACCOUNTS: Final[str] = "/v1/gl-accounts"
-ENDPOINT_SECURITIES: Final[str] = "/v1/securities"
-ENDPOINT_TRANSACTIONS: Final[str] = "/v1/transactions"
-ENDPOINT_TASKS: Final[str] = "/v1/tasks"
+ENDPOINT_OAUTH_TOKEN: Final[str] = "/oauth2/token"  # noqa: S105
+ENDPOINT_FUNDS: Final[str] = "/funds"
+ENDPOINT_INVESTORS: Final[str] = "/investors"
+ENDPOINT_GL_ACCOUNTS: Final[str] = "/gl-accounts"
+ENDPOINT_SECURITIES: Final[str] = "/securities"
+ENDPOINT_TRANSACTIONS: Final[str] = "/transactions"
+ENDPOINT_TASKS: Final[str] = "/tasks"
 
 # =============================================================================
 # HTTP Headers - Standard
