@@ -17,9 +17,9 @@ from contextlib import asynccontextmanager
 from typing import TYPE_CHECKING, Any
 
 import httpx
-from httpx_auth import OAuth2ClientCredentials
 import structlog
 
+from .auth import OAuth2ClientCredentials
 from .constants import (
     CONTENT_TYPE_JSON,
     DEFAULT_INTEGRATION_CODE,
@@ -331,10 +331,10 @@ async def create_client(
             funds = await client.get_funds()
     """
     resolved_auth = auth or OAuth2ClientCredentials(
-        token_url=f"{config.base_url}{ENDPOINT_OAUTH_TOKEN}",
+        f"{config.base_url}{ENDPOINT_OAUTH_TOKEN}",
         client_id=config.client_id,
         client_secret=config.client_secret,
-        early_expiry=0,
+        early_expiry=config.token_early_expiry_seconds,
     )
 
     client = FundAccountingClient(

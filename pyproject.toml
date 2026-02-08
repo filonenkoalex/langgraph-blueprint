@@ -27,7 +27,6 @@ dependencies = [
     "langgraph>=1.0.7",
     "pydantic-settings>=2.12.0",
     "httpx",
-    "httpx-auth",
     "structlog",
 ]
 

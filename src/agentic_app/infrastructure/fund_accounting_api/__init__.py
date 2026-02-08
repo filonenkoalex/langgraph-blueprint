@@ -22,6 +22,9 @@ Usage::
         funds = await client.get_funds()
 """
 
+# Auth
+from .auth import OAuth2ClientCredentials
+
 # Client
 from .client import FundAccountingClient, create_client
 
@@ -58,6 +61,7 @@ __all__ = [
     "FundResponse",
     "GLAccountResponse",
     "InvestorResponse",
+    "OAuth2ClientCredentials",
     "SecurityResponse",
     "TaskError",
     "TaskFailedError",
