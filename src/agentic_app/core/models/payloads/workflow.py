@@ -6,7 +6,7 @@ users confirm and modify data in the same message.
 
 from pydantic import BaseModel, Field
 
-from agentic_app.models.core.enums import ConversationIntent
+from agentic_app.core.models.enums import ConversationIntent
 
 # Define a union type for mutation values to avoid Any
 type MutationValue = str | int | float | bool

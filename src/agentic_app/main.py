@@ -1,11 +1,17 @@
-"""Demo: Using StructuredOutputClient extension."""
+"""Demo: Using StructuredDecisionRunnable with LCEL."""
+
+from typing import cast
 
 from langchain_openai import ChatOpenAI
 from pydantic import BaseModel, Field
 
-from agentic_app.extensions import StructuredOutputClient
-from agentic_app.models.core.decision import LLMDecision
-from agentic_app.models.payloads.extraction import ExtractionPayload
+from agentic_app.core import (
+    ExtractionPayload,
+    LLMDecision,
+    StructuredDecisionRunnable,
+)
+
+type ActorDecision = LLMDecision[ExtractionPayload[Actor]]
 
 
 class Actor(BaseModel):
@@ -19,13 +25,14 @@ def main() -> None:
     """Run extraction demo."""
     llm = ChatOpenAI(model="gpt-4o")
 
-    client = StructuredOutputClient(llm)
-
-    # Type comes from invoke, not constructor
-    decision = client.invoke(
-        "Tom Hanks is an American actor",
-        LLMDecision[ExtractionPayload[Actor]],
+    # LCEL-compatible runnable: can be used standalone or piped
+    runnable = StructuredDecisionRunnable(
+        llm=llm,
+        output_type=LLMDecision[ExtractionPayload[Actor]],
     )
+
+    # Runnable.invoke returns BaseModel; cast to the concrete type
+    decision = cast("ActorDecision", runnable.invoke("Tom Hanks is an American actor"))
 
     # Use typed response
     print(f"Confidence: {decision.confidence}")  # noqa: T201

@@ -12,23 +12,40 @@ LLM interactions, including:
 Example usage with LangChain:
     ```python
     from langchain_openai import ChatOpenAI
-    from agentic_app.models import (
+    from agentic_app.core import (
         LLMDecision,
         ExtractionPayload,
-        FundQuery,
-        FundExtractionDecision,
+        StructuredDecisionRunnable,
     )
+    from agentic_app.models import FundQuery
 
     llm = ChatOpenAI(model="gpt-4o")
-    structured_llm = llm.with_structured_output(FundExtractionDecision)
-
-    result = structured_llm.invoke("I want to buy VTI")
+    runnable = StructuredDecisionRunnable(
+        llm=llm,
+        output_type=LLMDecision[ExtractionPayload[FundQuery]],
+    )
+    result = runnable.invoke("I want to buy VTI")
     if result.is_actionable():
         fund_query = result.payload.data
         # proceed with fund_query.ticker
     ```
 """
 
+from agentic_app.core import (
+    AgentResponsePayload,
+    ConversationIntent,
+    ExtractionPayload,
+    LLMDecision,
+    LLMDecisionMeta,
+    ResolutionStatus,
+    ResponseType,
+    ScoredCandidate,
+    SelectionPayload,
+    SelectionStrategy,
+    StateMutation,
+    UserInputPayload,
+    WorkflowMutationPayload,
+)
 from agentic_app.models.aliases import (
     AgentResponseDecision,
     FundExtractionDecision,
@@ -36,21 +53,7 @@ from agentic_app.models.aliases import (
     UserInputDecision,
     WorkflowMutationDecision,
 )
-from agentic_app.models.core.decision import LLMDecision, LLMDecisionMeta
-from agentic_app.models.core.enums import (
-    ConversationIntent,
-    ResolutionStatus,
-    ResponseType,
-    SelectionStrategy,
-)
 from agentic_app.models.domain.fund import Fund, FundQuery
-from agentic_app.models.payloads.conversation import (
-    AgentResponsePayload,
-    UserInputPayload,
-)
-from agentic_app.models.payloads.extraction import ExtractionPayload
-from agentic_app.models.payloads.selection import ScoredCandidate, SelectionPayload
-from agentic_app.models.payloads.workflow import StateMutation, WorkflowMutationPayload
 
 __all__ = [
     "AgentResponseDecision",

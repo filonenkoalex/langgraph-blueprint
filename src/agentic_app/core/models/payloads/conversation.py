@@ -6,7 +6,7 @@ agent responses in conversational flows.
 
 from pydantic import BaseModel, Field
 
-from agentic_app.models.core.enums import ConversationIntent, ResponseType
+from agentic_app.core.models.enums import ConversationIntent, ResponseType
 
 
 class UserInputPayload(BaseModel):

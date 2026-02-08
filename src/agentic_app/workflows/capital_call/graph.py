@@ -11,6 +11,7 @@ from langgraph.graph import MessagesState, StateGraph
 
 model = ChatOpenAI()
 
+
 def chatbot(state: MessagesState) -> dict[str, list[object]]:
     """Invoke the LLM with the current conversation history."""
     response = model.invoke(state["messages"])

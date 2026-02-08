@@ -6,7 +6,7 @@ where multiple candidates may match a user's query.
 
 from pydantic import BaseModel, Field
 
-from agentic_app.models.core.enums import SelectionStrategy
+from agentic_app.core.models.enums import SelectionStrategy
 
 
 class ScoredCandidate[CandidateT: BaseModel](BaseModel):

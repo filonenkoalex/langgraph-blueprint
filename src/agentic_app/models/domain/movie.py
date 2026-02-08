@@ -44,7 +44,9 @@ class Movie(BaseModel):
     genres: list[str] = Field(default_factory=list, description="List of genre tags.")
     cast: list[Actor] = Field(default_factory=list, description="List of actors.")
     rating: float = Field(ge=0.0, le=10.0, description="Rating out of 10.")
-    runtime_minutes: int | None = Field(default=None, description="Duration in minutes.")
+    runtime_minutes: int | None = Field(
+        default=None, description="Duration in minutes."
+    )
 
 
 class MovieQuery(BaseModel):
@@ -63,13 +65,25 @@ class MovieQuery(BaseModel):
         min_rating: Minimum rating threshold.
     """
 
-    title: str | None = Field(default=None, description="Partial or full title to match.")
-    actor_name: str | None = Field(default=None, description="Actor name to search for.")
-    director_name: str | None = Field(default=None, description="Director name to filter by.")
+    title: str | None = Field(
+        default=None, description="Partial or full title to match."
+    )
+    actor_name: str | None = Field(
+        default=None, description="Actor name to search for."
+    )
+    director_name: str | None = Field(
+        default=None, description="Director name to filter by."
+    )
     genre: str | None = Field(default=None, description="Genre to filter by.")
-    year_from: int | None = Field(default=None, description="Minimum release year (inclusive).")
-    year_to: int | None = Field(default=None, description="Maximum release year (inclusive).")
-    min_rating: float | None = Field(default=None, ge=0.0, le=10.0, description="Minimum rating.")
+    year_from: int | None = Field(
+        default=None, description="Minimum release year (inclusive)."
+    )
+    year_to: int | None = Field(
+        default=None, description="Maximum release year (inclusive)."
+    )
+    min_rating: float | None = Field(
+        default=None, ge=0.0, le=10.0, description="Minimum rating."
+    )
 
     def is_empty(self) -> bool:
         """Check if the query has no filters set."""
