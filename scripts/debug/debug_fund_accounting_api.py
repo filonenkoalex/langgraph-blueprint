@@ -15,7 +15,7 @@ import asyncio
 import json
 from typing import TYPE_CHECKING
 
-from agentic_app.configs import FundAccountingApiSettings
+from agentic_app.infrastructure.configs import FundAccountingApiSettings
 from agentic_app.infrastructure.fund_accounting_api import (
     FundAccountingConfig,
     FundAccountingError,

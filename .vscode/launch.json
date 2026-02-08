@@ -2,16 +2,6 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug: main.py",
-            "type": "debugpy",
-            "request": "launch",
-            "program": "${workspaceFolder}/src/agentic_app/main.py",
-            "console": "integratedTerminal",
-            "envFile": "${workspaceFolder}/.env",
-            "cwd": "${workspaceFolder}",
-            "justMyCode": true
-        },
-        {
             "name": "[DEBUG] LangGraph DEV",
             "type": "debugpy",
             "request": "launch",

@@ -4,6 +4,6 @@ Provides compiled graph workflows for different domains,
 each implementing structured conversational flows.
 """
 
-from agentic_app.workflows.capital_call.graph import graph
+from .capital_call.graph import graph
 
 __all__ = ["graph"]

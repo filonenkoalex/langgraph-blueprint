@@ -27,6 +27,7 @@ dependencies = [
     "pydantic-settings>=2.12.0",
     "httpx",
     "structlog",
+    "rapidfuzz",
 ]
 
 [project.optional-dependencies]

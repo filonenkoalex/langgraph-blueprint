@@ -6,21 +6,10 @@ when working with LLMDecision and various payloads.
 
 from agentic_app.core import (
     AgentResponsePayload,
-    ExtractionPayload,
     LLMDecision,
-    SelectionPayload,
     UserInputPayload,
     WorkflowMutationPayload,
 )
-from agentic_app.models.domain.fund import Fund, FundQuery
-
-# Extraction decisions
-type FundExtractionDecision = LLMDecision[ExtractionPayload[FundQuery]]
-"""Decision wrapping fund query extraction from user input."""
-
-# Selection decisions
-type FundSelectionDecision = LLMDecision[SelectionPayload[Fund]]
-"""Decision wrapping fund selection from multiple candidates."""
 
 # Conversation decisions
 type UserInputDecision = LLMDecision[UserInputPayload]

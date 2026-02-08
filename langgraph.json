@@ -1,7 +1,7 @@
 {
   "dependencies": ["."],
   "graphs": {
-    "capital_call": "./src/agentic_app/workflows/capital_call/graph.py:graph"
+    "capital_call": "./src/agentic_app/application/workflows/capital_call/graph.py:graph"
   },
   "env": ".env"
 }

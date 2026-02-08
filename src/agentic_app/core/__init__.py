@@ -10,6 +10,8 @@ Provides a complete toolkit for building type-safe conversational AI:
   via the pipe operator (``prompt | runnable``).
 - **Schema utilities**: Provider-specific schema preparation
   (e.g., OpenAI strict mode).
+- **Fuzzy search**: Generic, type-safe containers for fuzzy text
+  matching with configurable scoring (``SearchableList``).
 
 Example:
     ```python
@@ -52,6 +54,9 @@ from agentic_app.core.models.payloads.workflow import (
 )
 from agentic_app.core.runnables.structured_output import StructuredDecisionRunnable
 from agentic_app.core.schema.utils import prepare_openai_schema
+from agentic_app.core.search.search_hit import SearchHit
+from agentic_app.core.search.search_results import SearchResults
+from agentic_app.core.search.searchable_list import SearchableList
 
 __all__ = [
     "AgentResponsePayload",
@@ -63,6 +68,9 @@ __all__ = [
     "ResolutionStatus",
     "ResponseType",
     "ScoredCandidate",
+    "SearchHit",
+    "SearchResults",
+    "SearchableList",
     "SelectionPayload",
     "SelectionStrategy",
     "StateMutation",

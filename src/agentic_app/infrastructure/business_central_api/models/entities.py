@@ -13,7 +13,9 @@ class FundResponse(BaseModel):
     id: str = Field(..., alias="code", description="Unique id of the fund.")
     name: str = Field(..., description="The name of the fund.")
     company_posting_group: str = Field(
-        ..., alias="companyPostingGroup", description="The company posting group of the fund."
+        ...,
+        alias="companyPostingGroup",
+        description="The company posting group of the fund.",
     )
     currency_code: str = Field(
         ..., alias="currencyCode", description="The currency code of the fund."

@@ -29,7 +29,9 @@ DIGEST_ALGORITHM: Final[str] = "MD5-SESS"
 
 ODATA_FILTER_FUNDS: Final[str] = "type eq 'Fund'"
 ODATA_FILTER_INVESTORS: Final[str] = "type eq 'LP'"
-ODATA_SELECT_FUNDS: Final[str] = "code,name,companyPostingGroup,currencyCode,public,listedDate"
+ODATA_SELECT_FUNDS: Final[str] = (
+    "code,name,companyPostingGroup,currencyCode,public,listedDate"
+)
 ODATA_SELECT_INVESTORS: Final[str] = "no,name,currencyCode"
 
 # =============================================================================
